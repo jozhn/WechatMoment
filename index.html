@@ -705,19 +705,19 @@
             var requestDialog = new mdui.Dialog('#request');
             mdui.prompt('公众号文章链接', function (value) {
                 var xhr = new XMLHttpRequest;
-                xhr.open('GET', 'http://www.atoolbox.net/Apps/WechatMomentScreenshot/get_article_info.php?url=' + encodeURIComponent(value)); //获取标题和封面的服务器
+                xhr.open('GET', 'https://www.135editor.com/downloads/getRemoteContent?uri=' + encodeURIComponent(value)); //获取标题和封面的服务器
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState == 4 && xhr.status == 200) {
                         var result = JSON.parse(xhr.responseText);
                         document.getElementById('requestAction').innerText = 'OK';
 
                         if (requestDialog.getState() == 'opening' || requestDialog.getState() == 'opened') {
-                            if (typeof(result) != 'undefined' && result.success) {
-                                document.getElementById('configArticleTitle').value = result.title;
-                                document.getElementById('articleTitle').innerText = result.title;
-                                document.getElementById('articleIcon').style.backgroundImage = 'url(\"' + result.cover + '\")';
+                            if (typeof(result) != 'undefined' && result.ret == 0) {
+                                document.getElementById('configArticleTitle').value = result.data.name;
+                                document.getElementById('articleTitle').innerText = result.data.name;
+                                document.getElementById('articleIcon').style.backgroundImage = 'url(\"' + result.data.coverimg + '\")';
                                 document.getElementById('requestResult').innerText = '获取成功！(ゝ∀･)';
-                                document.getElementById('requestResultContent').innerHTML = '标题：' + result.title + '<br />封面：<a target="_blank" href="' + result.cover + '">点此查看</a>';
+                                document.getElementById('requestResultContent').innerHTML = '标题：' + result.data.name + '<br />封面：<a target="_blank" href="' + result.data.coverimg + '">点此查看</a>';
                             } else {
                                 document.getElementById('requestResult').innerText = '获取失败！( ´_っ`)';
                                 document.getElementById('requestResultContent').innerHTML = '输入的链接是否为微信公众号文章？<br />（链接通常以 <code>https://mp.weixin.qq.com/</code> 作为开头）';
